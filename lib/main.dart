@@ -10,6 +10,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:bubble/bubble.dart';
 
 void main() {
   initializeDateFormatting().then((_) => runApp(const MyApp()));
@@ -153,6 +154,25 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
+  Widget _bubbleBuilder(
+    Widget child, {
+    required message,
+    required nextMessageInGroup,
+  }) =>
+      Bubble(
+        color: _user.id != message.author.id ||
+                message.type == types.MessageType.image
+            ? const Color.fromRGBO(199, 160, 99, 1)
+            : const Color.fromRGBO(160, 16, 26, 1),
+        radius: const Radius.circular(20.0),
+        nip: _user.id != message.author.id
+            ? BubbleNip.leftTop
+            : BubbleNip.rightTop,
+        nipWidth: 6,
+        nipHeight: 15,
+        child: child,
+      );
+
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Chat(
@@ -164,6 +184,7 @@ class _ChatPageState extends State<ChatPage> {
           showUserAvatars: true,
           showUserNames: true,
           user: _user,
+          bubbleBuilder: _bubbleBuilder,
         ),
       );
 }
