@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'session.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -37,6 +38,8 @@ class _ChatPageState extends State<ChatPage> {
   final _user = const types.User(
     id: '82091008-a484-4a89-ae75-a22bf8d6f3ac',
   );
+
+  final _agent = const types.User(id: '1234');
 
   @override
   void initState() {
@@ -132,15 +135,33 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void _handleSendPressed(types.PartialText message) {
+  types.TextMessage _buildUserMessage(String text) {
     final textMessage = types.TextMessage(
       author: _user,
       createdAt: DateTime.now().millisecondsSinceEpoch,
       id: const Uuid().v4(),
-      text: message.text,
+      text: text,
     );
+    return textMessage;
+  }
 
-    _addMessage(textMessage);
+  types.TextMessage _buildAgentMessage(String text) {
+    final textMessage = types.TextMessage(
+      author: _agent,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+      id: const Uuid().v4(),
+      text: text,
+    );
+    return textMessage;
+  }
+
+  void _handleSendPressed(types.PartialText message) async {
+    Map<String, String> requestData = {'query': message.text};
+    _addMessage(_buildUserMessage(message.text));
+    final dynamic response = await Session()
+        .post('http://localhost:8000/api/v1/chat/completion', requestData);
+
+    _addMessage(_buildAgentMessage(response['answer']));
   }
 
   void _loadMessages() async {
@@ -181,8 +202,6 @@ class _ChatPageState extends State<ChatPage> {
           onMessageTap: _handleMessageTap,
           onPreviewDataFetched: _handlePreviewDataFetched,
           onSendPressed: _handleSendPressed,
-          showUserAvatars: true,
-          showUserNames: true,
           user: _user,
           bubbleBuilder: _bubbleBuilder,
         ),
