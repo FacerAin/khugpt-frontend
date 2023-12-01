@@ -210,7 +210,13 @@ class _ChatPageState extends State<ChatPage> {
         ),
         body: Chat(
           theme: const DefaultChatTheme(
-              primaryColor: Colors.white, secondaryColor: Colors.white),
+              receivedMessageBodyTextStyle: TextStyle(color: Colors.white),
+              primaryColor: Colors.white,
+              secondaryColor: Colors.white,
+              attachmentButtonIcon: Icon(
+                Icons.add,
+                color: Colors.white,
+              )),
           messages: _messages,
           onAttachmentPressed: _handleAttachmentPressed,
           onMessageTap: _handleMessageTap,
