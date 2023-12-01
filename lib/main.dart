@@ -63,6 +63,13 @@ class _ChatPageState extends State<ChatPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               TextButton(
+                onPressed: () => _initMessages(),
+                child: const Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text('Clear Chat'),
+                ),
+              ),
+              TextButton(
                 onPressed: () => Navigator.pop(context),
                 child: const Align(
                   alignment: AlignmentDirectional.centerStart,
@@ -158,21 +165,21 @@ class _ChatPageState extends State<ChatPage> {
   void _handleSendPressed(types.PartialText message) async {
     Map<String, String> requestData = {'query': message.text};
     _addMessage(_buildUserMessage(message.text));
-    final dynamic response = await Session()
-        .post('http://localhost:8000/api/v1/chat/completion', requestData);
+    final dynamic response = await Session().post(
+        'http://facerain-dev.iptime.org:1009/api/v1/chat/completion',
+        requestData);
 
     _addMessage(_buildAgentMessage(response['answer']));
   }
 
-  void _loadMessages() async {
-    final response = await rootBundle.loadString('assets/messages.json');
-    final messages = (jsonDecode(response) as List)
-        .map((e) => types.Message.fromJson(e as Map<String, dynamic>))
-        .toList();
-
+  void _initMessages() async {
     setState(() {
-      _messages = messages;
+      _messages = [];
     });
+  }
+
+  void _loadMessages() async {
+    _addMessage(_buildAgentMessage("안녕하세요, KHUGPT입니다! 무엇이 궁금한가요?"));
   }
 
   Widget _bubbleBuilder(
@@ -196,7 +203,14 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: const Color.fromRGBO(160, 16, 26, 1),
+          title: const Text('KHUGPT'),
+        ),
         body: Chat(
+          theme: const DefaultChatTheme(
+              primaryColor: Colors.white, secondaryColor: Colors.white),
           messages: _messages,
           onAttachmentPressed: _handleAttachmentPressed,
           onMessageTap: _handleMessageTap,
