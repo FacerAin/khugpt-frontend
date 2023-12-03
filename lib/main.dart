@@ -162,6 +162,11 @@ class _ChatPageState extends State<ChatPage> {
     return textMessage;
   }
 
+  String _transformReponseText(String text) {
+    text = text.replaceAll(")", " )");
+    return text;
+  }
+
   void _handleSendPressed(types.PartialText message) async {
     Map<String, String> requestData = {'query': message.text};
     _addMessage(_buildUserMessage(message.text));
@@ -169,7 +174,9 @@ class _ChatPageState extends State<ChatPage> {
         'http://facerain-dev.iptime.org:1009/api/v1/chat/completion',
         requestData);
 
-    _addMessage(_buildAgentMessage(response['answer']));
+    String agentMessageText = _transformReponseText(response['answer']);
+
+    _addMessage(_buildAgentMessage(agentMessageText));
   }
 
   void _initMessages() async {
