@@ -47,6 +47,8 @@ dependencies:
   http: ^1.1.0
   flutter_chat_types: ^3.6.2
   bubble: ^1.2.1
+  flutter_markdown: ^0.6.18+2
+  flutter_cors: ^1.5.0
 
 dev_dependencies:
   flutter_test:
