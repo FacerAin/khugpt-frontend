@@ -196,6 +196,8 @@ class _ChatPageState extends State<ChatPage> {
   void _handleSendPressed(types.PartialText message) async {
     Map<String, String> requestData = {'query': message.text};
     _addMessage(_buildUserMessage(message.text));
+
+    await Future.delayed(const Duration(seconds: 1));
     _addMessage(_buildAgentMessage("✅ 답변 생성 중... 잠시만 기다려 주세요 ☺️"));
 
     _startTimer();
@@ -242,8 +244,11 @@ class _ChatPageState extends State<ChatPage> {
     String exampleQuery1 =
         exampleQueryList[random.nextInt(exampleQueryList.length)];
 
+    await Future.delayed(const Duration(seconds: 1));
     _addMessage(_buildAgentMessage("안녕하세요, KHUGPT입니다! 무엇이 궁금한가요?"));
+    await Future.delayed(const Duration(seconds: 1));
     _addMessage(_buildAgentMessage("이런 질문을 해볼 수 있어요 ✅"));
+    await Future.delayed(const Duration(seconds: 1));
     _addMessage(_buildAgentMessage("Q. $exampleQuery1"));
   }
 
