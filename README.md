@@ -133,10 +133,10 @@ Please refer to `LICENSE` for LICENSE.
 [license-shield]: https://img.shields.io/github/license/FacerAin/khugpt-frontend.svg?style=flat
 [license-url]: https://github.com/FacerAin/khugpt-frontend/blob/master/LICENSE.txt
 
-[Flutter]: https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=python&logoColor=white
+[Flutter]: https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=Flutter&logoColor=white
 [Flutter-url]: https://flutter.dev/
 
-[Dart]: https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=python&logoColor=white
+[Dart]: https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=Dart&logoColor=white
 [Dart-url]: https://dart.dev/
 
 
